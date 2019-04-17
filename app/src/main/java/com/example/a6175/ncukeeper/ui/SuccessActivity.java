@@ -1,26 +1,42 @@
 package com.example.a6175.ncukeeper.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.a6175.ncukeeper.MainActivity;
-import com.example.a6175.ncukeeper.NcuWlan;
 import com.example.a6175.ncukeeper.R;
-import com.example.a6175.ncukeeper.util.L;
+import com.example.a6175.ncukeeper.util.HttpUtil;
 import com.example.a6175.ncukeeper.util.ShareUtils;
 //import com.example.a6175.ncukeeper.service.DetectService;
 
+import java.io.IOException;
 import java.util.Date;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+import static com.example.a6175.ncukeeper.util.StaticClass.URL_AUTH;
+import static com.example.a6175.ncukeeper.util.UtilTools.runOnUiThreadToToast;
 
 public class SuccessActivity extends AppCompatActivity {
 
     private long startTime;
     private TextView text_time;
     private Button btn_loginOut;
+
+    public static void startActivity(Context context) {
+        Intent intent = new Intent(context, SuccessActivity.class);
+        context.startActivity(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,14 +68,34 @@ public class SuccessActivity extends AppCompatActivity {
         btn_loginOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NcuWlan.loginOut();
-                ShareUtils.delete(SuccessActivity.this,"startTime");
-                ShareUtils.putBoolean(SuccessActivity.this,"connect",false);
-                startActivity(new Intent(SuccessActivity.this,MainActivity.class));
-                finish();
+                loginOut();
             }
         });
 
+    }
+
+    private void loginOut() {
+        RequestBody requestBody= new FormBody.Builder()
+                .add("action","logout")
+                .add("username","")
+                .add("password","")
+                .add("ajax","1")
+                .build();
+        HttpUtil.post(URL_AUTH, requestBody, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                runOnUiThreadToToast(SuccessActivity.this, getString(R.string.loginout_fail));
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                runOnUiThreadToToast(SuccessActivity.this, getString(R.string.loginout_succ));
+            }
+        });
+        ShareUtils.delete(SuccessActivity.this,"startTime");
+        ShareUtils.putBoolean(SuccessActivity.this,"connect",false);
+        startActivity(new Intent(SuccessActivity.this,MainActivity.class));
+        finish();
     }
 
     private void setTime(long startTime) {
@@ -82,8 +118,4 @@ public class SuccessActivity extends AppCompatActivity {
         btn_loginOut = findViewById(R.id.loginOut);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }

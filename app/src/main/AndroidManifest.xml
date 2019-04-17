@@ -28,7 +28,7 @@
             <!--android:name=".service.DetectService"-->
             <!--android:enabled="true"-->
             <!--android:exported="true" />-->
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".ui.MainActivity"/>
         <activity android:name=".ui.SuccessActivity"/>
     </application>
 

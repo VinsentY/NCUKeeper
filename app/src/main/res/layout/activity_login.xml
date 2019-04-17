@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:paddingLeft="45dp"
         android:paddingRight="45dp"
-        tools:context=".MainActivity">
+        tools:context=".ui.MainActivity">
 
         <TextView
             android:layout_width="match_parent"

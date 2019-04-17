@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">NCUKeeper</string>
+    <string name="login_too_fast">两次认证时间太短,请稍后再尝试！</string>
+    <string name="flag_login_succ">login_ok</string>
+    <string name="tip_of_connect_wlan_fail">检测到未连接NCUWLAN，请连接至NCUWLAN</string>
+    <string name="tip_of_login_fail">连接服务器失败,请检查网络状态</string>
+    <string name="loginout_fail">下线失败</string>
+    <string name="loginout_succ">下线成功</string>
+    <string name="tip_of_input_valid">用户名或密码不能为空</string>
+    <string name="login_user_or_password_error">用户名或密码错误</string>
+    <string name="login_error">出现未知错误</string>
 </resources>
